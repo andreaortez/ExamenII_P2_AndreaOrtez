@@ -1,11 +1,11 @@
-
 package andreaortez_examen2p2;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Torneo implements Serializable{
-    private String nombre, periodo;
+public class Torneo implements Serializable {
+
+    private String nombre, periodo, deporte;
     private ArrayList<Equipo> equipos = new ArrayList();
     private ArrayList<Partido> partidos = new ArrayList();
 
@@ -32,9 +32,16 @@ public class Torneo implements Serializable{
     public void setPeriodo(String periodo) {
         this.periodo = periodo;
     }
-    
-    
 
+    public String getDeporte() {
+        return deporte;
+    }
+
+    public void setDeporte(String deporte) {
+        this.deporte = deporte;
+    }
+
+    
     public ArrayList<Equipo> getEquipos() {
         return equipos;
     }
