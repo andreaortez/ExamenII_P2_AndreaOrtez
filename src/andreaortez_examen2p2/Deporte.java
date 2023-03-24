@@ -31,4 +31,8 @@ public class Deporte implements Serializable{
         this.nombre = nombre;
     }
 
+    @Override
+    public String toString() {
+        return nombre;
+    } 
 }

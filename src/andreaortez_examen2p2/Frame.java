@@ -1,6 +1,8 @@
 package andreaortez_examen2p2;
 
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -140,6 +142,11 @@ public class Frame extends javax.swing.JFrame {
         treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Q5");
         treeNode1.add(treeNode2);
         jt_torneos.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jt_torneos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jt_torneosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jt_torneos);
 
         pn_fondo.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 210, 460));
@@ -282,6 +289,11 @@ public class Frame extends javax.swing.JFrame {
         pn_torneo.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, -1, 20));
 
         bt_agregarE2.setText("Agregar Equipo");
+        bt_agregarE2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_agregarE2MouseClicked(evt);
+            }
+        });
         pn_torneo.add(bt_agregarE2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 190, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -327,6 +339,8 @@ public class Frame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bt_torneoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_torneoMouseClicked
+        Equipo(cb_equipo);
+        Partido();
         pn_torneo.setVisible(true);
         pn_equipo.setVisible(false);
         pn_partido.setVisible(false);
@@ -334,6 +348,7 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_torneoMouseClicked
 
     private void bt_deporteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_deporteMouseClicked
+        Torneo();
         pn_torneo.setVisible(false);
         pn_equipo.setVisible(false);
         pn_partido.setVisible(false);
@@ -348,6 +363,8 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_equipoMouseClicked
 
     private void bt_partidoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_partidoMouseClicked
+        Equipo(cb_equipo2);
+        Equipo(cb_equipo3);
         pn_torneo.setVisible(false);
         pn_equipo.setVisible(false);
         pn_partido.setVisible(true);
@@ -355,45 +372,78 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_partidoMouseClicked
 
     private void jButton11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton11MouseClicked
-        try{
-        partidos.add(new Partido(cb_equipo2.getSelectedItem().toString(),cb_equipo3.getSelectedItem().toString(), Integer.parseInt(tf_punt1.toString()),
-                Integer.parseInt(tf_punt2.toString())));
-        
-        JOptionPane.showMessageDialog(this, "Partido guardado con éxito");
-        }catch(Exception ex){
+        try {
+            partidos.add(new Partido(cb_equipo2.getSelectedItem().toString(), cb_equipo3.getSelectedItem().toString(), Integer.parseInt(tf_punt1.getText()),
+                    Integer.parseInt(tf_punt2.getText())));
+
+            JOptionPane.showMessageDialog(this, "Partido guardado con éxito");
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "No se guardaron los datos");
         }
     }//GEN-LAST:event_jButton11MouseClicked
 
     private void bt_agregarEMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_agregarEMouseClicked
-        try{
-        equipos.add(new Equipo(tf_nombreE.toString(), Integer.parseInt(tf_puntosE.toString())));
-        
-        JOptionPane.showMessageDialog(this, "Equipo guardado con éxito");
-        }catch(Exception ex){
+        try {
+            equipos.add(new Equipo(tf_nombreE.getText(), Integer.parseInt(tf_puntosE.getText())));
+
+            JOptionPane.showMessageDialog(this, "Equipo guardado con éxito");
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "No se guardaron los datos");
         }
     }//GEN-LAST:event_bt_agregarEMouseClicked
 
     private void bt_agregarDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_agregarDMouseClicked
-        try{
-        deportes.add(new Deporte(tf_nombreD.toString()));
-        
-        JOptionPane.showMessageDialog(this, "Deporte guardado con éxito");
-        }catch(Exception ex){
+        try {
+            deportes.add(new Deporte(tf_nombreD.getText()));
+
+            JOptionPane.showMessageDialog(this, "Deporte guardado con éxito");
+
+            LlenarArbol();
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "No se guardaron los datos");
         }
     }//GEN-LAST:event_bt_agregarDMouseClicked
 
     private void bt_agregarTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_agregarTMouseClicked
-        try{
-        torneos.add(new Torneo(tf_nombreT.toString(),cb_periodo.getSelectedItem().toString()));
-        
-        JOptionPane.showMessageDialog(this, "Torneo guardado con éxito");
-        }catch(Exception ex){
+        try {
+            torneos.add(new Torneo(tf_nombreT.getText(), cb_periodo.getSelectedItem().toString()));
+
+            JOptionPane.showMessageDialog(this, "Torneo guardado con éxito");
+            LlenarArbol();
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "No se guardaron los datos");
         }
     }//GEN-LAST:event_bt_agregarTMouseClicked
+
+    private void bt_agregarE2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_agregarE2MouseClicked
+        try {
+            torneos.add(new Torneo());
+            for (Equipo e : equipos) {
+                if (e.getNombre().equals(cb_equipo.getSelectedItem().toString())) {
+                    torneos.get(torneos.size() - 1).getEquipos().add(e);
+                }
+            }
+
+            JOptionPane.showMessageDialog(this, "Torneo guardado con éxito");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "No se guardaron los datos");
+        }
+    }//GEN-LAST:event_bt_agregarE2MouseClicked
+
+    private void jt_torneosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_torneosMouseClicked
+        if (evt.isMetaDown()) {
+            int row = jt_torneos.getClosestRowForLocation(evt.getX(), evt.getY());
+            jt_torneos.setSelectionRow(row);
+            Object v1 = jt_torneos.getSelectionPath().getLastPathComponent();
+            DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) v1;
+
+            if (nodo_seleccionado.getUserObject() instanceof Torneo) {
+                popmenu.show(evt.getComponent(), evt.getX(), evt.getY());
+            } else {
+//                menu2_popup.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+        }
+    }//GEN-LAST:event_jt_torneosMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -428,16 +478,57 @@ public class Frame extends javax.swing.JFrame {
     }
 
     private void LlenarArbol() {
+        jt_torneos.removeAll();
         DefaultTreeModel modelo = (DefaultTreeModel) jt_torneos.getModel();
         DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
-        jt_torneos.removeAll();
 
         for (int i = 0; i < raiz.getChildCount(); i++) {
-            DefaultMutableTreeNode p = new DefaultMutableTreeNode(new Equipo(nombre, edad, nacionalidad));
-            ((DefaultMutableTreeNode) raiz.getChildAt(i)).add(p);
+            DefaultMutableTreeNode periodo = (DefaultMutableTreeNode) raiz.getChildAt(i);
+
+            for (Deporte d : deportes) {
+                DefaultMutableTreeNode deporte = new DefaultMutableTreeNode(d);
+                periodo.add(deporte);
+
+                for (Torneo t : d.getTorneos()) {
+                    if (t.getPeriodo().equals(periodo.getUserObject())) {
+                        deporte.add(new DefaultMutableTreeNode(t));
+                    }
+                }
+            }
         }
-        
+
         modelo.reload();
+    }
+
+    private void Torneo() {
+        cb_torneo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{}));
+        DefaultComboBoxModel modelo = (DefaultComboBoxModel) cb_torneo.getModel();
+
+        for (Torneo t : torneos) {
+            modelo.addElement(t);
+        }
+
+        cb_torneo.setModel(modelo);
+    }
+
+    private void Equipo(JComboBox temp) {
+        temp.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{}));
+        DefaultComboBoxModel modelo = (DefaultComboBoxModel) temp.getModel();
+
+        for (Equipo e : equipos) {
+            modelo.addElement(e);
+        }
+        temp.setModel(modelo);
+    }
+
+    private void Partido() {
+        cb_partido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{}));
+        DefaultComboBoxModel modelo = (DefaultComboBoxModel) cb_partido.getModel();
+
+        for (Equipo e : equipos) {
+            modelo.addElement(e);
+        }
+        cb_partido.setModel(modelo);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
