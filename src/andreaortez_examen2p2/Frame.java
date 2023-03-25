@@ -9,13 +9,13 @@ import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 public class Frame extends javax.swing.JFrame {
 
     ArrayList<Deporte> deportes = new ArrayList();
-    ArrayList<Partido> partidos = new ArrayList();
     DefaultMutableTreeNode nodo_seleccionado;
 
     public Frame() {
@@ -23,6 +23,7 @@ public class Frame extends javax.swing.JFrame {
         LlenarArbol();
         pn_partido.setVisible(false);
         pn_listar.setVisible(false);
+
     }
 
     @SuppressWarnings("unchecked")
@@ -41,7 +42,7 @@ public class Frame extends javax.swing.JFrame {
         binario = new javax.swing.JMenuItem();
         jd_barra = new javax.swing.JDialog();
         jPanel1 = new javax.swing.JPanel();
-        jProgressBar1 = new javax.swing.JProgressBar();
+        barra = new javax.swing.JProgressBar();
         jd_tabla = new javax.swing.JDialog();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -51,18 +52,19 @@ public class Frame extends javax.swing.JFrame {
         agregarD = new javax.swing.JMenuItem();
         jd_partidos = new javax.swing.JDialog();
         jPanel3 = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
         bt_cerrar2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tb_partidos = new javax.swing.JTable();
         pn_fondo = new javax.swing.JPanel();
         pn_menu = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jt_torneos = new javax.swing.JTree();
         pn_listar = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jl_equipos = new javax.swing.JList<>();
         bt_Mpartidos = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jl_equipos = new javax.swing.JList<>();
         pn_partido = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -132,14 +134,14 @@ public class Frame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
+                .addComponent(barra, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(121, 121, 121)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(barra, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(144, Short.MAX_VALUE))
         );
 
@@ -222,28 +224,42 @@ public class Frame extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane4.setViewportView(jList1);
-
-        jPanel3.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 260, 410));
-
+        bt_cerrar2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         bt_cerrar2.setText("Cerrar");
         bt_cerrar2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bt_cerrar2MouseClicked(evt);
             }
         });
-        jPanel3.add(bt_cerrar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 460, -1, -1));
+        jPanel3.add(bt_cerrar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 460, -1, -1));
+
+        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel1.setFont(new java.awt.Font("Dialog", 3, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Partidos");
+        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 460, -1));
+
+        tb_partidos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Partido", "Puntos"
+            }
+        ));
+        jScrollPane5.setViewportView(tb_partidos);
+
+        jPanel3.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 460, 400));
 
         javax.swing.GroupLayout jd_partidosLayout = new javax.swing.GroupLayout(jd_partidos.getContentPane());
         jd_partidos.getContentPane().setLayout(jd_partidosLayout);
         jd_partidosLayout.setHorizontalGroup(
             jd_partidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
         );
         jd_partidosLayout.setVerticalGroup(
             jd_partidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,14 +296,7 @@ public class Frame extends javax.swing.JFrame {
         pn_fondo.add(pn_menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 270, 500));
 
         pn_listar.setBackground(new java.awt.Color(255, 255, 255));
-
-        jl_equipos.setModel(new DefaultListModel ());
-        jl_equipos.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jl_equiposMouseClicked(evt);
-            }
-        });
-        jScrollPane2.setViewportView(jl_equipos);
+        pn_listar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         bt_Mpartidos.setText("Mostrar Partidos");
         bt_Mpartidos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -295,41 +304,20 @@ public class Frame extends javax.swing.JFrame {
                 bt_MpartidosMouseClicked(evt);
             }
         });
+        pn_listar.add(bt_Mpartidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 240, -1, -1));
 
         jLabel18.setFont(new java.awt.Font("Dialog", 3, 18)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(0, 0, 0));
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel18.setText("Equipos");
+        pn_listar.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 219, -1));
 
-        javax.swing.GroupLayout pn_listarLayout = new javax.swing.GroupLayout(pn_listar);
-        pn_listar.setLayout(pn_listarLayout);
-        pn_listarLayout.setHorizontalGroup(
-            pn_listarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pn_listarLayout.createSequentialGroup()
-                .addContainerGap(59, Short.MAX_VALUE)
-                .addGroup(pn_listarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE))
-                .addGap(45, 45, 45)
-                .addComponent(bt_Mpartidos)
-                .addGap(34, 34, 34))
-        );
-        pn_listarLayout.setVerticalGroup(
-            pn_listarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pn_listarLayout.createSequentialGroup()
-                .addGroup(pn_listarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pn_listarLayout.createSequentialGroup()
-                        .addGap(221, 221, 221)
-                        .addComponent(bt_Mpartidos))
-                    .addGroup(pn_listarLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel18)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(25, Short.MAX_VALUE))
-        );
+        jl_equipos.setModel(new DefaultListModel());
+        jScrollPane4.setViewportView(jl_equipos);
 
-        pn_fondo.add(pn_listar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 0, 470, -1));
+        pn_listar.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(31, 48, 219, 428));
+
+        pn_fondo.add(pn_listar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 0, 450, 500));
 
         pn_partido.setBackground(new java.awt.Color(255, 255, 255));
         pn_partido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -337,18 +325,18 @@ public class Frame extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("Partido");
-        pn_partido.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 12, -1, -1));
+        pn_partido.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
 
         jLabel14.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(0, 0, 0));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("Puntos");
-        pn_partido.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 40, 160, -1));
+        pn_partido.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 50, 160, -1));
 
         jLabel15.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(0, 0, 0));
         jLabel15.setText("Equipo 2:");
-        pn_partido.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
+        pn_partido.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, -1));
 
         jButton11.setText("Agregar Partido");
         jButton11.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -356,24 +344,24 @@ public class Frame extends javax.swing.JFrame {
                 jButton11MouseClicked(evt);
             }
         });
-        pn_partido.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 180, -1, -1));
+        pn_partido.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, -1, -1));
 
         jLabel16.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(0, 0, 0));
         jLabel16.setText("Equipo 1:");
-        pn_partido.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
+        pn_partido.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, -1));
 
-        pn_partido.add(cb_equipo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, 160, -1));
+        pn_partido.add(cb_equipo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 160, -1));
 
-        pn_partido.add(cb_equipo3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 120, 160, -1));
+        pn_partido.add(cb_equipo3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, 160, -1));
 
         sp_e2.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
-        pn_partido.add(sp_e2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 120, 60, 30));
+        pn_partido.add(sp_e2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 130, 60, 30));
 
         sp_e1.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
-        pn_partido.add(sp_e1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 70, 60, 30));
+        pn_partido.add(sp_e1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 80, 60, 30));
 
-        pn_fondo.add(pn_partido, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 0, 470, -1));
+        pn_fondo.add(pn_partido, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 0, 450, 500));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -395,8 +383,8 @@ public class Frame extends javax.swing.JFrame {
                 for (Torneo t : d.getTorneos()) {
                     if (t.getNombre().equals(nodo_seleccionado.getUserObject().toString())) {
                         t.getPartidos().add(new Partido(cb_equipo2.getSelectedItem().toString(), cb_equipo3.getSelectedItem().toString(), Integer.parseInt(sp_e1.getValue().toString()),
-                    Integer.parseInt(sp_e2.getValue().toString())));
-                        
+                                Integer.parseInt(sp_e2.getValue().toString())));
+
                         JOptionPane.showMessageDialog(this, "Partido agregado con éxito");
                     }
                 }
@@ -431,10 +419,6 @@ public class Frame extends javax.swing.JFrame {
         pn_partido.setVisible(false);
     }//GEN-LAST:event_listarActionPerformed
 
-    private void jl_equiposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jl_equiposMouseClicked
-        ListarE();
-    }//GEN-LAST:event_jl_equiposMouseClicked
-
     private void agregarTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarTActionPerformed
         try {
             for (Deporte d : deportes) {
@@ -456,19 +440,36 @@ public class Frame extends javax.swing.JFrame {
             jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int seleccion = jfc.showSaveDialog(this);
             if (seleccion == JFileChooser.APPROVE_OPTION) {
-                File archivo = jfc.getSelectedFile();
+                File carpeta = jfc.getCurrentDirectory();
                 if (!archivo.exists()) {
                     archivo = new File(archivo.getPath() + ".ajor");
+
+                    for (Deporte d : deportes) {
+                        if (d.getNombre().equals(nodo_seleccionado.getUserObject().toString())) {
+                            Abrir_barra();
+                            HiloBarra h = new HiloBarra(barra, d.getTorneos().size());
+                            Thread proceso1 = new Thread(h);
+                            proceso1.start();
+                        }
+                    }
                 } else {
                     String[] ruta = archivo.getPath().split("\\.");
                     if (ruta[ruta.length - 1].equals("ajor")) {
                         FileOutputStream fos = new FileOutputStream(archivo);
                         ObjectOutputStream oos = new ObjectOutputStream(fos);
-//                        oos.writeObject((Deporte));
+                        oos.writeObject((deportes));
                         fos.close();
                         oos.close();
 
-                        Abrir_barra();
+                        for (Deporte d : deportes) {
+                            if (d.getNombre().equals(nodo_seleccionado.getUserObject().toString())) {
+                                Abrir_barra();
+                                HiloBarra h = new HiloBarra(barra, d.getTorneos().size());
+                                Thread proceso1 = new Thread(h);
+                                proceso1.start();
+                            }
+                        }
+
                     } else {
                         JOptionPane.showMessageDialog(this, "No fue posible guardar");
                     }
@@ -495,7 +496,8 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_agregarEActionPerformed
 
     private void bt_MpartidosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_MpartidosMouseClicked
-
+        ListarP();
+        Abrir_partidos();
     }//GEN-LAST:event_bt_MpartidosMouseClicked
 
     private void bt_cerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_cerrarMouseClicked
@@ -646,6 +648,31 @@ public class Frame extends javax.swing.JFrame {
         jl_equipos.setModel(modelo);
     }
 
+    private void ListarP() {
+        try {
+            tb_partidos.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{},
+                    new String[]{"No. Partido", "Equipo 1", "Puntos", "Equipo 2", "Puntos"}));
+            int cont = 1;
+            for (Deporte d : deportes) {
+                for (Torneo t : d.getTorneos()) {
+                    if (t.getNombre().equals(nodo_seleccionado.getUserObject().toString())) {
+                        for (Partido p : t.getPartidos()) {
+                            if (p.getNombre1().equals(jl_equipos.getSelectedValue()) || p.getNombre2().equals(jl_equipos.getSelectedValue())) {
+                                Object[] row = {cont, p.getNombre1(), p.getPuntaje1(), p.getNombre2(), p.getPuntaje2()};
+                                DefaultTableModel modelo = (DefaultTableModel) tb_partidos.getModel();
+                                modelo.addRow(row);
+                                tb_partidos.setModel(modelo);
+                                cont++;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     private void Abrir_barra() {
         jd_barra.pack();
         jd_barra.setLocationRelativeTo(this);
@@ -659,7 +686,7 @@ public class Frame extends javax.swing.JFrame {
         jd_tabla.setResizable(false);
         jd_tabla.setVisible(true);
     }
-    
+
     private void Abrir_partidos() {
         jd_partidos.pack();
         jd_partidos.setLocationRelativeTo(this);
@@ -672,6 +699,7 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JMenuItem agregarE;
     private javax.swing.JMenuItem agregarP;
     private javax.swing.JMenuItem agregarT;
+    private javax.swing.JProgressBar barra;
     private javax.swing.JMenuItem binario;
     private javax.swing.JButton bt_Mpartidos;
     private javax.swing.JButton bt_cerrar;
@@ -681,20 +709,19 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu deporte;
     private javax.swing.JPopupMenu equipo;
     private javax.swing.JButton jButton11;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JDialog jd_barra;
@@ -710,6 +737,7 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JSpinner sp_e1;
     private javax.swing.JSpinner sp_e2;
     private javax.swing.JMenuItem tabla;
+    private javax.swing.JTable tb_partidos;
     private javax.swing.JTable tb_posiciones;
     private javax.swing.JPopupMenu torneo;
     // End of variables declaration//GEN-END:variables
