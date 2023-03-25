@@ -67,7 +67,6 @@ public class AdminDeportes {
                         deportes.add(temp);
                     }
                 } catch (EOFException e) {
-                    //encontro el final deSSSl archivo
                 }
             }
         } catch (Exception e) {

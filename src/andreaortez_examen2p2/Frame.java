@@ -1,14 +1,19 @@
 package andreaortez_examen2p2;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -17,13 +22,14 @@ public class Frame extends javax.swing.JFrame {
 
     ArrayList<Deporte> deportes = new ArrayList();
     DefaultMutableTreeNode nodo_seleccionado;
+//    AdminDeportes ad = new AdminDeportes("deportes.ajor");
 
     public Frame() {
         initComponents();
         LlenarArbol();
         pn_partido.setVisible(false);
         pn_listar.setVisible(false);
-
+//        ad.cargarArchivo();
     }
 
     @SuppressWarnings("unchecked")
@@ -43,6 +49,7 @@ public class Frame extends javax.swing.JFrame {
         jd_barra = new javax.swing.JDialog();
         jPanel1 = new javax.swing.JPanel();
         barra = new javax.swing.JProgressBar();
+        etiqueta = new javax.swing.JLabel();
         jd_tabla = new javax.swing.JDialog();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -60,6 +67,7 @@ public class Frame extends javax.swing.JFrame {
         pn_menu = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jt_torneos = new javax.swing.JTree();
+        jButton1 = new javax.swing.JButton();
         pn_listar = new javax.swing.JPanel();
         bt_Mpartidos = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
@@ -128,21 +136,31 @@ public class Frame extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
+        etiqueta.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        etiqueta.setForeground(new java.awt.Color(0, 0, 0));
+        etiqueta.setText("Cargando...");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(barra, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
+                .addComponent(barra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(214, Short.MAX_VALUE)
+                .addComponent(etiqueta)
+                .addGap(211, 211, 211))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(121, 121, 121)
                 .addComponent(barra, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(144, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(etiqueta)
+                .addContainerGap(119, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jd_barraLayout = new javax.swing.GroupLayout(jd_barra.getContentPane());
@@ -291,7 +309,15 @@ public class Frame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jt_torneos);
 
-        pn_menu.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 210, 460));
+        pn_menu.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 210, 420));
+
+        jButton1.setText("Cargar Archivo");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        pn_menu.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 460, -1, -1));
 
         pn_fondo.add(pn_menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 270, 500));
 
@@ -436,45 +462,33 @@ public class Frame extends javax.swing.JFrame {
 
     private void binarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_binarioActionPerformed
         try {
+            Deporte sport = null;
             JFileChooser jfc = new JFileChooser();
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Deporte", "ajor");
+            jfc.setFileFilter(filtro);
             jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int seleccion = jfc.showSaveDialog(this);
             if (seleccion == JFileChooser.APPROVE_OPTION) {
-                File carpeta = jfc.getCurrentDirectory();
-                if (!archivo.exists()) {
-                    archivo = new File(archivo.getPath() + ".ajor");
-
-                    for (Deporte d : deportes) {
-                        if (d.getNombre().equals(nodo_seleccionado.getUserObject().toString())) {
-                            Abrir_barra();
-                            HiloBarra h = new HiloBarra(barra, d.getTorneos().size());
-                            Thread proceso1 = new Thread(h);
-                            proceso1.start();
-                        }
-                    }
-                } else {
-                    String[] ruta = archivo.getPath().split("\\.");
-                    if (ruta[ruta.length - 1].equals("ajor")) {
-                        FileOutputStream fos = new FileOutputStream(archivo);
-                        ObjectOutputStream oos = new ObjectOutputStream(fos);
-                        oos.writeObject((deportes));
-                        fos.close();
-                        oos.close();
-
-                        for (Deporte d : deportes) {
-                            if (d.getNombre().equals(nodo_seleccionado.getUserObject().toString())) {
-                                Abrir_barra();
-                                HiloBarra h = new HiloBarra(barra, d.getTorneos().size());
-                                Thread proceso1 = new Thread(h);
-                                proceso1.start();
-                            }
-                        }
-
-                    } else {
-                        JOptionPane.showMessageDialog(this, "No fue posible guardar");
+                for (Deporte d : deportes) {
+                    if (d.getNombre().equals(nodo_seleccionado.getUserObject().toString())) {
+                        Abrir_barra();
+                        HiloBarra h = new HiloBarra(barra, d.getTorneos().size(), etiqueta);
+                        Thread proceso1 = new Thread(h);
+                        proceso1.start();
+                        sport = d;
                     }
                 }
+
+                File carpeta = jfc.getSelectedFile();
+                AdminDeportes ad = new AdminDeportes(carpeta.getPath() + ".ajor");
+                ad.cargarArchivo();
+                ad.setDeporte(sport);
+                ad.escribirArchivo();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "No fue posible guardar");
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -530,6 +544,29 @@ public class Frame extends javax.swing.JFrame {
         jd_partidos.setVisible(false);
     }//GEN-LAST:event_bt_cerrar2MouseClicked
 
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        File fichero = null;
+        FileInputStream entrada = null;
+        ObjectInputStream objeto = null;
+        try {
+            JFileChooser jfc = new JFileChooser();
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Deporte", "ajor");
+            jfc.setFileFilter(filtro);        
+            int seleccion = jfc.showOpenDialog(this);
+            if (seleccion == JFileChooser.APPROVE_OPTION) {
+                fichero = jfc.getSelectedFile();
+                entrada = new FileInputStream(fichero);
+                objeto = new ObjectInputStream(entrada);
+                AdminDeportes ad = new AdminDeportes(fichero.getPath());
+                ad.cargarArchivo();
+                deportes=ad.getDeportes();
+                LlenarArbol();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton1MouseClicked
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -571,13 +608,13 @@ public class Frame extends javax.swing.JFrame {
 
             periodo.removeAllChildren();
             for (Deporte d : deportes) {
-                DefaultMutableTreeNode deporte = new DefaultMutableTreeNode(d);
+                DefaultMutableTreeNode sport = new DefaultMutableTreeNode(d);
 
-                periodo.add(deporte);
+                periodo.add(sport);
 
                 for (Torneo t : d.getTorneos()) {
                     if (t.getPeriodo().equals(periodo.getUserObject())) {
-                        deporte.add(new DefaultMutableTreeNode(t));
+                        sport.add(new DefaultMutableTreeNode(t));
                     }
                 }
             }
@@ -586,17 +623,6 @@ public class Frame extends javax.swing.JFrame {
         modelo.reload();
     }
 
-//    private void Torneo() {
-//        cb_torneo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{}));
-//        DefaultComboBoxModel modelo = (DefaultComboBoxModel) cb_torneo.getModel();
-//
-//        for (Torneo t : torneos) {
-//            modelo.addElement(t);
-//        }
-//
-//        cb_torneo.setModel(modelo);
-//    }
-//
     private void Equipo(JComboBox temp) {
         temp.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{}));
         DefaultComboBoxModel modelo = (DefaultComboBoxModel) temp.getModel();
@@ -612,26 +638,6 @@ public class Frame extends javax.swing.JFrame {
         }
         temp.setModel(modelo);
     }
-//
-//    private void Partido() {
-//        cb_partido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{}));
-//        DefaultComboBoxModel modelo = (DefaultComboBoxModel) cb_partido.getModel();
-//
-//        for (Equipo e : equipos) {
-//            modelo.addElement(e);
-//        }
-//        cb_partido.setModel(modelo);
-//    }
-//
-//    private void Deporte() {
-//        cb_deporte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{}));
-//        DefaultComboBoxModel modelo = (DefaultComboBoxModel) cb_deporte.getModel();
-//
-//        for (Deporte d : deportes) {
-//            modelo.addElement(d);
-//        }
-//        cb_deporte.setModel(modelo);
-//    }
 
     private void ListarE() {
         DefaultListModel modelo = (DefaultListModel) jl_equipos.getModel();
@@ -652,12 +658,16 @@ public class Frame extends javax.swing.JFrame {
         try {
             tb_partidos.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{},
                     new String[]{"No. Partido", "Equipo 1", "Puntos", "Equipo 2", "Puntos"}));
+
             int cont = 1;
             for (Deporte d : deportes) {
                 for (Torneo t : d.getTorneos()) {
                     if (t.getNombre().equals(nodo_seleccionado.getUserObject().toString())) {
+                        System.out.println("entré 1");
                         for (Partido p : t.getPartidos()) {
-                            if (p.getNombre1().equals(jl_equipos.getSelectedValue()) || p.getNombre2().equals(jl_equipos.getSelectedValue())) {
+                            if (p.getNombre1().equals(jl_equipos.getSelectedValue())
+                                    || p.getNombre2().equals(jl_equipos.getSelectedValue())) {
+                                System.out.println("entre 2");
                                 Object[] row = {cont, p.getNombre1(), p.getPuntaje1(), p.getNombre2(), p.getPuntaje2()};
                                 DefaultTableModel modelo = (DefaultTableModel) tb_partidos.getModel();
                                 modelo.addRow(row);
@@ -708,6 +718,8 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cb_equipo3;
     private javax.swing.JPopupMenu deporte;
     private javax.swing.JPopupMenu equipo;
+    private javax.swing.JLabel etiqueta;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton11;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;

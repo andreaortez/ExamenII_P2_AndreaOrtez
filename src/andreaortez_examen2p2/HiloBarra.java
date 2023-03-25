@@ -1,15 +1,18 @@
 package andreaortez_examen2p2;
 
+import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
 public class HiloBarra extends Thread {
 
     private JProgressBar barra;
     private int torneos;
+    private JLabel etiqueta;
 
-    public HiloBarra(JProgressBar barra, int torneos) {
+    public HiloBarra(JProgressBar barra, int torneos, JLabel etiqueta) {
         this.barra = barra;
         this.torneos = torneos;
+        this.etiqueta = etiqueta;
     }
 
     public JProgressBar getBarra() {
@@ -28,6 +31,14 @@ public class HiloBarra extends Thread {
         this.torneos = torneos;
     }
 
+    public JLabel getEtiqueta() {
+        return etiqueta;
+    }
+
+    public void setEtiqueta(JLabel etiqueta) {
+        this.etiqueta = etiqueta;
+    }
+
     @Override
     public void run() {
         barra.setMaximum(torneos);
@@ -38,6 +49,6 @@ public class HiloBarra extends Thread {
             } catch (InterruptedException ex) {
             }
         }
-
+        etiqueta.setText("Listo");
     }
 }
